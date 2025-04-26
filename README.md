@@ -1,3 +1,24 @@
+# FURIA Chat
+
+FURIA Chat é um projeto de chat em tempo real desenvolvido para os fãs do time de CS:GO da FURIA. Ele permite que os usuários interajam entre si, recebam atualizações ao vivo sobre os jogos e mensagens automáticas relacionadas ao time.
+
+## Funcionalidades
+
+- **Chat em tempo real**: Envie e receba mensagens instantaneamente.
+- **Mensagens automáticas**: Atualizações sobre jogos e interações simuladas de torcida.
+- **Landing page temática**: Informações sobre o time e próximos jogos.
+- **Experiência personalizada**: Cada usuário pode escolher seu nome para interagir no chat.
+
+## Tecnologias Utilizadas
+
+- **Next.js**: Framework para construção da aplicação web.
+- **Socket.IO**: Biblioteca para comunicação em tempo real.
+- **React**: Biblioteca para construção da interface do usuário.
+- **Tailwind CSS**: Framework para estilização.
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
