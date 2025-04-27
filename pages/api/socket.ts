@@ -15,11 +15,15 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponseWithIO
 ) {
-  // Agora o TS sabe que `res.socket.server.io` pode existir
   if (!res.socket.server.io) {
     console.log('🔌 Inicializando Socket.io…')
     const io = new IOServer(res.socket.server, { path: '/api/socket' })
     res.socket.server.io = io
+
+    // Variáveis para o placar e rounds
+    let furiaScore = 1;
+    let opponentScore = 0;
+    let round = 1;
 
     io.on('connection', socket => {
       console.log('🔗 Cliente conectado:', socket.id);
@@ -30,29 +34,67 @@ export default function handler(
         io.emit('chat:message', msg);
       });
 
-      // Enviar mensagens automáticas do time
+      // Enviar mensagem de boas-vindas
       const welcomeMessage = {
         user: 'FURIA Bot',
         msg: 'Bem-vindo ao chat oficial da FURIA! Acompanhe as novidades do time aqui.',
       };
       socket.emit('chat:message', welcomeMessage);
-
-      // Simular interações de torcida
-      setInterval(() => {
-        io.emit('chat:message', {
-          user: 'Torcedor',
-          msg: 'Vamos FURIA! Rumo à vitória! 🔥',
-        });
-      }, 15000);
-
-      // Atualizações ao vivo de jogos
-      setTimeout(() => {
-        io.emit('chat:message', {
-          user: 'FURIA Bot',
-          msg: 'Placar ao vivo: FURIA 1 x 0 Team Liquid',
-        });
-      }, 30000);
     });
+
+    // Simular interações de torcida (serão emitidas apenas uma vez para todos)
+    setInterval(() => {
+      io.emit('chat:message', {
+        user: 'Torcedor',
+        msg: 'Vamos FURIA! Rumo à vitória! 🔥',
+      });
+    }, 40000);
+
+    setInterval(() => {
+      io.emit('chat:message', {
+        user: 'Torcedor',
+        msg: 'Vamos, para cima deles!',
+      });
+    }, 50000);
+
+    setInterval(() => {
+      io.emit('chat:message', {
+        user: 'Torcedor',
+        msg: 'Vamoss!',
+      });
+    }, 75000);
+
+    setInterval(() => {
+      io.emit('chat:message', {
+        user: 'Torcedor',
+        msg: 'Alguem sabe o placar?',
+      });
+    }, 100000);
+
+    setInterval(() => {
+      io.emit('chat:message', {
+        user: 'Torcedor',
+        msg: `Está FURIA ${furiaScore} x ${opponentScore} Team Liquid`,	
+      });
+    }, 105000);
+
+    // Atualizações ao vivo do placar com rounds - atualizando a cada 10 segundos
+    setInterval(() => {
+      const atualizar = Math.random() < 0.40; // 40% de chance de atualizar o placar
+      if (atualizar) {
+        // FURIA sempre marca um ponto
+        furiaScore++;
+        // Com 40% de chance, o adversário marca um ponto (se ainda estiver abaixo de FURIA)
+        if (Math.random() < 0.4 && opponentScore < furiaScore) {
+          opponentScore++;
+        }
+        round++; // Incrementa o número do round quando há atualização
+      }
+      io.emit('chat:message', {
+        user: 'FURIA Bot',
+        msg: `Round ${round}: Placar ao vivo: FURIA ${furiaScore} x ${opponentScore} Team Liquid`
+      });
+    }, 90000);
   }
 
   res.end();

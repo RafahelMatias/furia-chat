@@ -23,7 +23,15 @@ export default function Home() {
     );
     socket.on('chat:message', (data: { user: string; msg: string }) => {
       console.log('↩️ Recebido no cliente:', data);
-      setMsgs(prev => [...prev, data]);
+      // Se a mensagem é um placar (FURIA Bot) atualiza a mensagem existente
+      if (data.user === 'FURIA Bot' && data.msg.startsWith('Placar ao vivo:')) {
+        setMsgs(prev => {
+          const newMsgs = prev.filter(m => !(m.user === 'FURIA Bot' && m.msg.startsWith('Placar ao vivo:')));
+          return [...newMsgs, data];
+        });
+      } else {
+        setMsgs(prev => [...prev, data]);
+      }
     });
   }, []);
 
@@ -42,7 +50,6 @@ export default function Home() {
       <div className="mb-4">
         <p>Bem-vindo ao chat oficial da FURIA! Aqui você pode interagir com outros fãs e acompanhar as novidades do time de CS:GO em tempo real.</p>
         <p className="mt-2 text-yellow-400">Próximo jogo: FURIA vs. Team Liquid - Hoje às 18h!</p>
-        <p className="mt-2 text-yellow-400">Jogadores: KSCERATO, yuurih, arT, drop, chelo</p>
       </div>
 
       {/* Input para nome de usuário */}
