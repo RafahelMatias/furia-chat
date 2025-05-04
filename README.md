@@ -1,23 +1,43 @@
 # FURIA Chat
 
-FURIA Chat é um projeto de chat em tempo real desenvolvido para os fãs do time de CS:GO da FURIA. Ele permite que os usuários interajam entre si, recebam atualizações ao vivo sobre os jogos e mensagens automáticas relacionadas ao time.
+## Descrição
+
+FURIA Chat é um **chat em tempo real** desenvolvido para os fãs do time de CS:GO da FURIA. Permite:
+
+- Troca de mensagens instantâneas entre usuários  
+- Simulação de torcida com comandos especiais (`/cheer`, `/vote`)  
+- Mensagens automáticas “bot” personalizadas   
 
 ## Funcionalidades
 
-- **Chat em tempo real**: Envie e receba mensagens instantaneamente.
-- **Mensagens automáticas**: Atualizações sobre jogos e interações simuladas de torcida.
-- **Landing page temática**: Informações sobre o time e próximos jogos.
-- **Experiência personalizada**: Cada usuário pode escolher seu nome para interagir no chat.
+- **Chat em tempo real**: mensagens enviadas aparecem instantaneamente em todas as abas/usuários  
+- **Simulador de torcida**: comandos especiais reconhecidos no cliente (_ex.:_ `/cheer`, `/vote`, `1`, `2`)  
+- **Mensagens automáticas**: o servidor ou bot podem enviar atualizações de jogo  
+- **Estilização temática**: cores e branding FURIA, bolhas diferenciadas por tipo de mensagem  
 
-## Tecnologias Utilizadas
+## Tech Stack
 
-- **Next.js**: Framework para construção da aplicação web.
-- **Socket.IO**: Biblioteca para comunicação em tempo real.
-- **React**: Biblioteca para construção da interface do usuário.
-- **Tailwind CSS**: Framework para estilização.
+- **Next.js** 15.3.1 (App Router)  
+- **React** 19.x + **TypeScript** 5.x  
+- **Socket.IO** 4.8.x (server e client)  
+- **Tailwind CSS** 4.x  
+- **ESLint** + `eslint-config-next`  
 
 
+## Como usar
 
+1. Abra o navegador e acesse `http://localhost:3000` (ou seu domínio de produção).  
+2. Informe seu nome e confirme (caso tenha implementado autenticação).  
+3. No campo de texto, digite:  
+   - `/cheer` para ver a mensagem de torcida animada  
+   - `/vote` para iniciar enquete (digite `1` para FURIA ou `2` para Team Liquid)  
+   - Qualquer outro texto será enviado como mensagem normal no chat em tempo real  
+4. Pressione **Enter** ou clique em **Enviar**.  
+5. Observe as mensagens aparecerem instantaneamente em todas as abas/janelas.  
+6. Para simular múltiplos usuários, abra outra aba ou navegador e repita o envio.  
+
+
+---
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

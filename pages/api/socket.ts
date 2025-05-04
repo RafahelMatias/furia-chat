@@ -4,7 +4,7 @@ import { Server as HttpServer }      from 'http'
 import { Socket as NetSocket }       from 'net'
 import { Server as IOServer }        from 'socket.io'
 
-// Extende o NextApiResponse para incluir `socket.server.io`
+
 type NextApiResponseWithIO = NextApiResponse & {
   socket: NetSocket & { server: HttpServer & { io?: IOServer } }
 }
@@ -20,7 +20,7 @@ export default function handler(
     const io = new IOServer(res.socket.server, { path: '/api/socket' })
     res.socket.server.io = io
 
-    // Variáveis para o placar e rounds
+    
     let furiaScore = 1;
     let opponentScore = 0;
     let round = 1;
@@ -28,7 +28,7 @@ export default function handler(
     io.on('connection', socket => {
       console.log('🔗 Cliente conectado:', socket.id);
 
-      // Receber mensagens do cliente
+      
       socket.on('chat:message', (msg: string) => {
         console.log('📨 Mensagem no servidor:', msg);
         io.emit('chat:message', msg);
@@ -78,12 +78,13 @@ export default function handler(
       });
     }, 105000);
 
-    // Atualizações ao vivo do placar com rounds - atualizando a cada 10 segundos
+    // Atualizações ao vivo do placar com rounds
     setInterval(() => {
       const atualizar = Math.random() < 0.40; // 40% de chance de atualizar o placar
       if (atualizar) {
-        // FURIA sempre marca um ponto
+        
         furiaScore++;
+        
         // Com 40% de chance, o adversário marca um ponto (se ainda estiver abaixo de FURIA)
         if (Math.random() < 0.4 && opponentScore < furiaScore) {
           opponentScore++;

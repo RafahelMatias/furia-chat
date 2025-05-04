@@ -1,0 +1,15 @@
+next
+react
+react-dom
+socket.io
+socket.io-client
+tailwindcss
+postcss
+autoprefixer
+eslint
+eslint-config-next
+typescript
+@types/node
+@types/react
+@types/react-dom
+dotenv

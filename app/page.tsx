@@ -37,8 +37,20 @@ export default function Home() {
 
   const sendMessage = () => {
     if (!input.trim() || !username.trim()) return;
-    console.log('📤 Enviando:', input);
-    socket.emit('chat:message', { user: username, msg: input });
+    const trimmed = input.trim();
+    if (trimmed === '/cheer') {
+      setMsgs(prev => [...prev, { user: 'Torcida', msg: 'Animação de torcida: 🎉🎉🎉' }]);
+    } else if (trimmed === '/vote') {
+      setMsgs(prev => [...prev, { user: 'Enquete', msg: 'Vote: Digite 1 para FURIA ou 2 para Team Liquid.' }]);
+    } else if (trimmed === '1' || trimmed === '2') {
+      setMsgs(prev => [
+        ...prev,
+        { user: 'Enquete', msg: trimmed === '1' ? 'Voto confirmado para FURIA' : 'Voto confirmado para Team Liquid' }
+      ]);
+    } else {
+      console.log('📤 Enviando:', input);
+      socket.emit('chat:message', { user: username, msg: input });
+    }
     setInput('');
   };
 
