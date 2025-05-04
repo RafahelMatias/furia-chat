@@ -43,17 +43,17 @@ export default function Home() {
   };
 
   return (
-    <main className="max-w-md mx-auto p-4 bg-black text-white">
-      <h1 className="text-3xl font-bold mb-4 text-yellow-500">FURIA CS:GO Chat</h1>
+    <main className="max-w-xl mx-auto p-6 bg-black text-white">
+      <h1 className="text-4xl font-bold mb-6 text-yellow-500">FURIA CS:GO Chat</h1>
 
       {/* Landing page com informações */}
-      <div className="mb-4">
+      <div className="mb-6">
         <p>Bem-vindo ao chat oficial da FURIA! Aqui você pode interagir com outros fãs e acompanhar as novidades do time de CS:GO em tempo real.</p>
         <p className="mt-2 text-yellow-400">Próximo jogo: FURIA vs. Team Liquid - Hoje às 18h!</p>
       </div>
 
       {/* Input para nome de usuário */}
-      <div className="mb-4">
+      <div className="mb-6">
         <input
           className="w-full border rounded px-3 py-2 text-white bg-gray-800 placeholder-gray-400"
           value={username}
@@ -63,7 +63,7 @@ export default function Home() {
       </div>
 
       {/* Container branco com texto em preto */}
-      <div className="border rounded h-80 p-2 overflow-y-auto mb-4 bg-gray-900 text-white">
+      <div className="border rounded h-96 p-4 overflow-y-auto mb-6 bg-gray-900 text-white">
         {msgs.map((m, i) => (
           <div key={i} className={`mb-1 ${m.user === 'FURIA Bot' ? 'font-bold text-yellow-500' : ''}`}>
             <span>{m.user}: </span>
