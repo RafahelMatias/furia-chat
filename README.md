@@ -26,8 +26,8 @@ FURIA Chat é um **chat em tempo real** desenvolvido para os fãs do time de CS:
 
 ## Como usar
 
-1. Abra o navegador e acesse `http://localhost:3000` (ou seu domínio de produção) 
-  -> criei esse link para melhor acesso e testes dos usuários
+1. Abra o navegador e acesse `http://localhost:3000`, após executar o start.bat. (ou seu domínio de produção) 
+  -> criei esse link para melhor acesso e testes dos usuário sem precisar executar o start.bat
         (https://furia-chat-musv.onrender.com).  
 2. Informe seu nome e confirme (caso tenha implementado autenticação).  
 3. No campo de texto, digite:  
