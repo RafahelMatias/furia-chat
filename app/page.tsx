@@ -1,12 +1,3 @@
-/*
-  Este arquivo representa a interface do chat, diretamente no navegador.
-  Aqui usamos React para gerenciar o estado, enviar e receber mensagens via WebSocket (Socket.IO).
-  Explicamos de forma simples como o usuário pode interagir: 
-  - Digitar mensagens e comandos especiais (/cheer, /vote, 1 ou 2).
-  - Observar atualizações do placar e animações da torcida.
-  - O componente se conecta ao servidor Socket.IO para enviar e receber eventos.
-*/
-
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -15,30 +6,36 @@ import { io, Socket } from 'socket.io-client';
 let socket: Socket;
 
 export default function Home() {
-  // Estado para armazenar mensagens, entradas de texto e nome do usuário.
   const [msgs, setMsgs] = useState<{ user: string; msg: string }[]>([]);
   const [input, setInput] = useState('');
   const [username, setUsername] = useState('');
   const mounted = useRef(false);
+  
+  // Referência para o auto-scroll
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Função para rolar o chat para baixo automaticamente
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [msgs]);
 
   useEffect(() => {
     if (mounted.current) return;
     mounted.current = true;
 
-    console.log('→ Iniciando conexão WebSocket…');
     socket = io({ path: '/api/socket' });
 
-    // Quando a conexão é estabelecida, mostramos o ID do socket.
-    socket.on('connect', () =>
-      console.log('✅ WS conectado, id:', socket.id)
-    );
-    // Ao receber mensagens do servidor, atualizamos a lista de mensagens.
+    socket.on('connect', () => console.log('✅ WS conectado, id:', socket.id));
+    
     socket.on('chat:message', (data: { user: string; msg: string }) => {
-      console.log('↩️ Recebido no cliente:', data);
-      // Atualiza a mensagem de placar se for do bot.
-      if (data.user === 'FURIA Bot' && data.msg.startsWith('Placar ao vivo:')) {
+      if (data.user === 'FURIA Bot' && data.msg.startsWith('Round')) {
+        // Atualiza a mensagem de placar sem duplicar
         setMsgs(prev => {
-          const newMsgs = prev.filter(m => !(m.user === 'FURIA Bot' && m.msg.startsWith('Placar ao vivo:')));
+          const newMsgs = prev.filter(m => !(m.user === 'FURIA Bot' && m.msg.startsWith('Round')));
           return [...newMsgs, data];
         });
       } else {
@@ -47,69 +44,76 @@ export default function Home() {
     });
   }, []);
 
-  // Função para tratar o envio de mensagens ou comandos especiais.
   const sendMessage = () => {
     if (!input.trim() || !username.trim()) return;
+    
     const trimmed = input.trim();
+    
+    // Lógica Profissional: Comandos emitem para o servidor para todos verem!
     if (trimmed === '/cheer') {
-      setMsgs(prev => [...prev, { user: 'Torcida', msg: 'Animação de torcida: 🎉🎉🎉' }]);
+      socket.emit('chat:message', { user: username, msg: '🎉🎉🎉 VAMOS FURIA! PRA CIMA! 🎉🎉🎉' });
     } else if (trimmed === '/vote') {
-      setMsgs(prev => [...prev, { user: 'Enquete', msg: 'Vote: Digite 1 para FURIA ou 2 para Team Liquid.' }]);
+      // O voto continua sendo uma interação com o bot local
+      setMsgs(prev => [...prev, { user: 'FURIA Bot', msg: 'Enquete: Digite 1 para FURIA ou 2 para Team Liquid.' }]);
     } else if (trimmed === '1' || trimmed === '2') {
       setMsgs(prev => [
         ...prev,
-        { user: 'Enquete', msg: trimmed === '1' ? 'Obrigado pelo voto na FURIA! Rumo a vitória!' : 'Voto confirmado para o Team Liquid' }
+        { user: 'FURIA Bot', msg: trimmed === '1' ? 'Voto computado: FURIA! 🐾' : 'Voto computado: Team Liquid 💧' }
       ]);
     } else {
-      // Mensagem normal enviada pelo usuário.
-      console.log('📤 Enviando:', input);
+      // Mensagem normal
       socket.emit('chat:message', { user: username, msg: input });
     }
     setInput('');
   };
 
   return (
-    <main className="max-w-xl mx-auto p-6 bg-black text-white">
-      <h1 className="text-4xl font-bold mb-6 text-yellow-500">FURIA CS:GO Chat</h1>
-
-      {/* Seção de informações do chat */}
-      <div className="mb-6">
-        <p>Bem-vindo ao chat oficial da FURIA! Aqui você pode interagir com outros fãs e acompanhar as novidades do time de CS:GO em tempo real.</p>
-        <p className="mt-2 text-yellow-400">Próximo jogo: FURIA vs. Team Liquid - Hoje às 18h!</p>
+    <main className="max-w-2xl mx-auto p-6 bg-zinc-950 text-white min-h-screen">
+      <div className="flex items-center gap-3 mb-6 border-b border-zinc-800 pb-4">
+        <h1 className="text-4xl font-black text-white">
+          FURIA <span className="text-yellow-500">CHAT</span>
+        </h1>
       </div>
 
-      {/* Input para o nome do usuário */}
-      <div className="mb-6">
+      <div className="mb-6 bg-zinc-900 p-4 rounded-lg border border-zinc-800">
+        <p className="text-sm text-zinc-300">Acompanhe a transmissão e torça em tempo real.</p>
+        <p className="mt-1 text-sm font-bold text-yellow-500">🎮 FURIA vs. Team Liquid - AO VIVO!</p>
+      </div>
+
+      <div className="mb-4">
         <input
-          className="w-full border rounded px-3 py-2 text-white bg-gray-800 placeholder-gray-400"
+          className="w-full border border-zinc-700 rounded px-4 py-3 text-white bg-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-yellow-500 transition-colors"
           value={username}
           onChange={e => setUsername(e.target.value)}
-          placeholder="Digite seu nome..."
+          placeholder="Digite seu Nickname para entrar..."
         />
       </div>
 
-      {/* Área de exibição das mensagens */}
-      <div className="border rounded h-96 p-4 overflow-y-auto mb-6 bg-gray-900 text-white">
+      <div className="border border-zinc-800 rounded-lg h-[400px] p-4 overflow-y-auto mb-4 bg-zinc-900 shadow-inner flex flex-col gap-2">
+        {msgs.length === 0 && <p className="text-zinc-500 text-center mt-auto mb-auto">Nenhuma mensagem ainda. Seja o primeiro!</p>}
         {msgs.map((m, i) => (
-          <div key={i} className={`mb-1 ${m.user === 'FURIA Bot' ? 'font-bold text-yellow-500' : ''}`}>
-            <span>{m.user}: </span>
-            {m.msg}
+          <div key={i} className={`p-2 rounded w-fit max-w-[85%] ${m.user === 'FURIA Bot' ? 'bg-yellow-500/10 border border-yellow-500/20 text-yellow-500' : 'bg-zinc-800 text-zinc-100'}`}>
+            <span className="font-bold mr-2 text-xs opacity-75">{m.user}:</span>
+            <span className="text-sm">{m.msg}</span>
           </div>
         ))}
+        {/* Div invisível para ancorar o scroll */}
+        <div ref={messagesEndRef} />
       </div>
 
-      {/* Área de digitação e envio de mensagens */}
-      <div className="flex">
+      <div className="flex gap-2">
         <input
-          className="flex-1 border rounded-l px-3 py-2 text-white bg-gray-800 placeholder-gray-400"
+          className="flex-1 border border-zinc-700 rounded px-4 py-3 text-white bg-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-yellow-500 transition-colors"
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && sendMessage()}
-          placeholder="Escreva algo…"
+          placeholder={username ? "Escreva sua mensagem ou use /cheer..." : "Digite um nickname primeiro..."}
+          disabled={!username}
         />
         <button
-          className="bg-yellow-500 text-black px-4 rounded-r"
+          className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-6 rounded transition-colors disabled:opacity-50"
           onClick={sendMessage}
+          disabled={!username}
         >
           Enviar
         </button>

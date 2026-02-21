@@ -1,79 +1,48 @@
-# FURIA Chat
+# FURIA Live Chat (Real-Time E-Sports Platform)
 
-## Descrição
+![Next.js](https://img.shields.io/badge/Next.js-15.3-black?style=for-the-badge&logo=next.js)
+![Socket.io](https://img.shields.io/badge/Socket.io-Real--Time-010101?style=for-the-badge&logo=socket.io)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-FURIA Chat é um **chat em tempo real** desenvolvido para os fãs do time de CS:GO da FURIA. Permite:
+## 📋 Project Overview
 
-- Troca de mensagens instantâneas entre usuários  
-- Simulação de torcida com comandos especiais (`/cheer`, `/vote`)  
-- Mensagens automáticas “bot” personalizadas   
+A real-time live chat application developed as a **Coding Challenge** to simulate fan engagement during e-Sports broadcasts (specifically for FURIA's CS:GO matches). 
 
-## Funcionalidades
+The core architectural focus was to establish a low-latency, persistent bidirectional connection between multiple clients and the server using **WebSockets**, deviating from traditional REST HTTP requests to allow instant broadcasting.
 
-- **Chat em tempo real**: mensagens enviadas aparecem instantaneamente em todas as abas/usuários  
-- **Simulador de torcida**: comandos especiais reconhecidos no cliente (_ex.:_ `/cheer`, `/vote`, `1`, `2`)  
-- **Mensagens automáticas**: o servidor ou bot podem enviar atualizações de jogo  
-- **Estilização temática**: cores e branding FURIA, bolhas diferenciadas por tipo de mensagem  
+🔗 **Live Demo:** [furia-chat-musv.onrender.com](https://furia-chat-musv.onrender.com)
 
-## Tech Stack
+## 🚀 Key Features
 
-- **Next.js** 15.3.1 (App Router)  
-- **React** 19.x + **TypeScript** 5.x  
-- **Socket.IO** 4.8.x (server e client)  
-- **Tailwind CSS** 4.x  
-- **ESLint** + `eslint-config-next`  
+* **Real-Time Bidirectional Comms:** Built with `Socket.IO`, allowing instant message delivery across all connected active clients without polling.
+* **Live Score Broadcasting:** The backend runs independent node intervals to simulate live match updates, pushing score changes to the client autonomously.
+* **Interactive Bot Commands:** * Type `/cheer` to broadcast a visual fan celebration to the entire room.
+  * Type `/vote` to interact with the local bot to predict the match winner.
+* **Auto-Scrolling UI:** Chat implements React `useRef` hooks to maintain scroll state at the bottom as new streams of data arrive.
 
+## 🛠️ Tech Stack
 
-## Como usar
+* **Frontend:** Next.js 15 (App Router), React 19, Tailwind CSS 4.
+* **Backend:** Next.js Custom API Routes acting as a Node.js server.
+* **Networking:** `socket.io` and `socket.io-client`.
+* **Language:** TypeScript.
 
-1. Abra o navegador e acesse `http://localhost:3000`, após executar o start.bat. (ou seu domínio de produção) 
-  -> criei esse link para melhor acesso e testes dos usuário sem precisar executar o start.bat
-        (https://furia-chat-musv.onrender.com).  
-2. Informe seu nome e confirme (caso tenha implementado autenticação).  
-3. No campo de texto, digite:  
-   - `/cheer` para ver a mensagem de torcida animada  
-   - `/vote` para iniciar enquete (digite `1` para FURIA ou `2` para Team Liquid)  
-   - Qualquer outro texto será enviado como mensagem normal no chat em tempo real  
-4. Pressione **Enter** ou clique em **Enviar**.  
-5. Observe as mensagens aparecerem instantaneamente em todas as abas/janelas.  
-6. Para simular múltiplos usuários, abra outra aba ou navegador e repita o envio.  
+## 💻 How to Run Locally
 
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/RafahelMatias/furia-chat.git](https://github.com/RafahelMatias/furia-chat.git)
+   cd furia-chat
 
----
+2. **Install Dependencies:**
+   ```Bash
+   npm install
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+3. **Start the Development Server:**
+   ```Bash
+   npm run dev
 
-## Getting Started
+The application will be available at http://localhost:3000.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Author: Rafahel Matias
+Software Engineer focused on Full-Stack Development and Real-Time Systems.
